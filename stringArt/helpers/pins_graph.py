@@ -28,5 +28,5 @@ class PinNode:
 
     def is_neighbor(self, next_pin, PIN_DISTANCE):
         max_distance = PIN_DISTANCE * 3
-        distance = math.sqrt((self.coords[0])**2 + (self.coords[1])**2)
+        distance = math.sqrt((self.coords[0] - next_pin.coords[0])**2 + (self.coords[1] - next_pin.coords[1])**2)
         return distance <= max_distance
