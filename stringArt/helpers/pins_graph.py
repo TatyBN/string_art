@@ -8,8 +8,8 @@ class PinsGraph:
 
 
     def create_graph(self, image):
-        for pin in image.pin_arr:
-            self.nodes.append(PinNode(pin))
+        for index, pin in enumerate(image.pin_arr):
+            self.nodes.append(PinNode(pin, index))
         for i in range(len(self.nodes)-1):
             pin = self.nodes[i]
             for next_pin in self.nodes[i+1:]:
@@ -18,13 +18,22 @@ class PinsGraph:
 
 class PinNode:
 
-    def __init__(self, coords):
+    def __init__(self, coords, id):
+        self.id = id
         self.coords = coords
-        self.neighbors = []
+        self.neighbors = {}
+        self.strings = {}
 
     def add_neighbor(self, neighbor_node):
-        self.neighbors.append(neighbor_node)
-        neighbor_node.neighbors.append(self)
+        self.neighbors[neighbor_node.id] = neighbor_node
+        neighbor_node.neighbors[self.id] = self
+
+    def add_string(self, neighbor_node):
+        del self.neighbors[neighbor_node.id]
+        self.strings[neighbor_node.id] = neighbor_node
+        del neighbor_node.neighbors[self.id]
+        neighbor_node.strings[self.id] = self
+        
 
     def is_neighbor(self, next_pin, PIN_DISTANCE):
         max_distance = PIN_DISTANCE * 3
