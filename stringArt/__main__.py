@@ -1,6 +1,7 @@
-from pathlib import Path
+
 import cv2 as cv
 import time
+
 
 from helpers.pins_graph import PinsGraph
 from helpers.image import Image
@@ -10,13 +11,16 @@ from tests.test_graph import test_graph_neighbors
 def main():
     start_time = time.time()
 
-    IMAGE_NAME = 'odri.jpg'
-    IMAGE_PATH = str( Path('stringArt/resources/pics/') / IMAGE_NAME )
-    STRING_IMAGE_NAME = '{}.jpg'.format(time.strftime("%m.%d_%H:%M"))
-    STRING_IMAGE_PATHE = str( Path('stringArt/resources/string_pics/') / STRING_IMAGE_NAME )
-    PIN_DISTANCE = 15
+    WINDOW_NAME = 'String Art'
 
-    img = Image(IMAGE_PATH, PIN_DISTANCE)
+    IMAGE_NAME = 'odri.jpg'
+    IMAGE_PATH = 'stringArt/resources/pics/' + IMAGE_NAME
+
+    STRING_IMAGE_NAME = '{}.jpg'.format(time.strftime("%m.%d_%H:%M"))
+    STRING_IMAGE_PATHE = 'stringArt/resources/string_pics/' + STRING_IMAGE_NAME
+
+
+    img = Image(IMAGE_PATH, WINDOW_NAME)
     graph = PinsGraph(img)
 
     img.generate_string_img(graph)
