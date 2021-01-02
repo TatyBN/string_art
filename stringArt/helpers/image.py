@@ -45,17 +45,6 @@ class Image:
 
         cv.imshow(self.WINDOW_NAME, self.edge_img)
 
-    # def create_pin_arr(self):
-    #     for x in [i for i in range(self.img_width+1) if i % self.PIN_DISTANCE==0]:
-    #         for y in [i for i in range(self.img_height+1) if i % self.PIN_DISTANCE==0]:
-    #             coords = (x,y)
-    #             mask = np.zeros(self.edge_img.shape, np.uint8)
-    #             cv.circle(mask, coords, radius=self.PIN_DISTANCE//2, color=255, thickness=-1)
-    #             for circle_coords in np.argwhere(mask==255):
-    #                 if np.any(self.edge_img[circle_coords[0], circle_coords[1]] !=0):
-    #                     coords = (circle_coords[1], circle_coords[0])
-    #                     break
-    #             self.pin_arr.append(coords)
 
     def create_pin_img(self):
         TRACKBAR_NAME = 'PIN_DISTANCE'
