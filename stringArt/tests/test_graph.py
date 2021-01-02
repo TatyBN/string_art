@@ -10,6 +10,7 @@ def naive_find_neighbors(pin, pin_pic, PIN_DISTANCE):
             neighbors.append((circle_coords[1], circle_coords[0]))
     return neighbors
 
+# this code is never called. what's its purpose?
 def test_graph_neighbors(graph, image):
     pin_img = image.create_pin_img()
     for node in graph.nodes:
