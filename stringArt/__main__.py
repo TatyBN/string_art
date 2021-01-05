@@ -1,36 +1,36 @@
-
 import cv2 as cv
 import time
 
-
+from helpers.edgeImage import EdgeImg
+from helpers.pinsImg import PinsImg
 from helpers.pins_graph import PinsGraph
-from helpers.image import Image
+from helpers.stringImg import StringImg
 
-# unused import
-from tests.test_graph import test_graph_neighbors
+WINDOW_NAME = 'String Art'
+
+IMAGE_NAME = 'odri.jpg'
+IMAGE_PATH = 'stringArt/resources/pics/' + IMAGE_NAME
+
+STRING_IMAGE_NAME = '{}.jpg'.format(time.strftime("%m.%d_%H:%M"))
+STRING_IMAGE_PATH = 'stringArt/resources/string_pics/' + STRING_IMAGE_NAME
+
 
 def main():
-    start_time = time.time()
 
-    # I suppose these are constants? As such, they're usually defined outside of functions...
-    WINDOW_NAME = 'String Art'
+    edge_img = EdgeImg(IMAGE_PATH)
+    edge_img.create_edge_img()
 
-    IMAGE_NAME = 'odri.jpg'
-    IMAGE_PATH = 'stringArt/resources/pics/' + IMAGE_NAME
+    pin_img = PinsImg(edge_img.edge_coords, edge_img.edge_img.shape)
+    pin_img.create_pin_img()
 
-    STRING_IMAGE_NAME = '{}.jpg'.format(time.strftime("%m.%d_%H:%M"))
-    STRING_IMAGE_PATH = 'stringArt/resources/string_pics/' + STRING_IMAGE_NAME
+    graph = PinsGraph(pin_img.pin_arr, pin_img.distance)
+    graph.create_graph()
 
+    string_img = StringImg(graph.nodes, edge_img.img)
+    string_img.generate_string_img()
 
-    img = Image(IMAGE_PATH, WINDOW_NAME)
-    graph = PinsGraph(img)
-
-    img.generate_string_img(graph)
-
-    print('@@@@@@@ {}'.format(time.time()-start_time))
-
-    cv.imwrite(STRING_IMAGE_PATH, img.img_out)
-    img.show_img(img.img_out, 0)
+    cv.imwrite(STRING_IMAGE_PATH, string_img.img_out)
+    string_img.show_img('String Image',string_img.img_out, 0)
 
 
 
