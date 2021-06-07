@@ -1,26 +1,31 @@
 import math
+import time
 
 class PinsGraph:
 
-    def __init__(self, image):
+    def __init__(self, pin_arr, distance):
         self.nodes = []
-        self.create_graph(image)
+        self.pin_arr = pin_arr
+        self.distance = distance
 
 
-    def create_graph(self, image):
-        for index, pin in enumerate(image.pin_arr):
+    def create_graph(self):
+        start_time = time.time()
+        for index, pin in enumerate(self.pin_arr):
             self.nodes.append(PinNode(pin, index))
-        for i in range(len(self.nodes)-1):
-            pin = self.nodes[i]
-            for next_pin in self.nodes[i+1:]:
-                if pin.is_neighbor(next_pin, image.PIN_DISTANCE):
+        for index, pin in enumerate(self.nodes):
+            for next_pin in self.nodes[index+1:]:
+                # i like the naming of these methods, it's very clear what's going on
+                # I will keep this comment here for good luck
+                if pin.is_neighbor(next_pin, self.distance):
                     pin.add_neighbor(next_pin)
+        print('Create graph time: {}'.format(time.time()-start_time))
 
 class PinNode:
 
     def __init__(self, coords, id):
+        self.coords = (coords[1],coords[0])
         self.id = id
-        self.coords = coords
         self.neighbors = {}
         self.strings = {}
 
@@ -33,9 +38,10 @@ class PinNode:
         self.strings[neighbor_node.id] = neighbor_node
         del neighbor_node.neighbors[self.id]
         neighbor_node.strings[self.id] = self
-        
 
-    def is_neighbor(self, next_pin, PIN_DISTANCE):
-        max_distance = PIN_DISTANCE * 3
-        distance = math.sqrt((self.coords[0] - next_pin.coords[0])**2 + (self.coords[1] - next_pin.coords[1])**2)
+
+    def is_neighbor(self, next_pin, pin_distance):
+        magic_number = 3
+        max_distance = (pin_distance * magic_number) ** 2 # ;)
+        distance = (self.coords[0] - next_pin.coords[0])**2 + (self.coords[1] - next_pin.coords[1])**2
         return distance <= max_distance
